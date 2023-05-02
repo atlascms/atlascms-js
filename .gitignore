@@ -1,3 +1,9 @@
+#VS Code
+/.vs
+
+#builds
+/lib
+
 # Logs
 logs
 *.log
