@@ -1,24 +1,25 @@
 {
-  "name": "atlas-node",
+  "name": "atlas-js",
   "version": "1.0.0",
-  "description": "Atlas CMS NodeJs SDK",
-  "main": "index.js",
+  "description": "Atlas CMS JS SDK",
+  "main": "dist/index.js",
   "scripts": {
     "test": "jest --config jestconfig.json",
     "build": "tsc",
+    "build:watch": "tsc --watch",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/atlascms/atlas-node.git"
+    "url": "git+https://github.com/atlascms/atlas-js.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/atlascms/atlas-node/issues"
+    "url": "https://github.com/atlascms/atlas-js/issues"
   },
-  "homepage": "https://github.com/atlascms/atlas-node#readme",
+  "homepage": "https://github.com/atlascms/atlas-js#readme",
   "devDependencies": {
     "@types/jest": "^29.5.1",
     "jest": "^29.5.0",
@@ -29,6 +30,10 @@
     "typescript": "^5.0.4"
   },
   "files": [
-    "lib/**/*"
-  ]
+    "dist",
+    "src"
+  ],
+  "dependencies": {
+    "axios": "^1.4.0"
+  }
 }
