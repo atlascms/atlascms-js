@@ -1,4 +1,4 @@
-import axios, { HttpStatusCode } from 'axios';
+import axios from 'axios';
 import { AxiosInstance } from 'axios';
 import { ApiException, ClientSettings } from '../types';
 
