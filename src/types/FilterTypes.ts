@@ -6,7 +6,16 @@ export type ContentFilter = {
   search?: string;
   resolve?: string;
   stage?: string;
-  filter?: string;
+  _filters?: string;
+};
+
+export type AssetFilter = {
+  folder?: string;
+  page?: number;
+  size?: number;
+  sort?: string;
+  search?: string;
+  _filters?: string;
 };
 
 export type ModelFilter = {

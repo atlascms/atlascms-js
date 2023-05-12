@@ -26,7 +26,7 @@ const onRequest = (request) => {
 };
 
 const onResponse = (response) => {
-  return response;
+  return response.data;
 };
 
 const onError = (error) => {
@@ -42,10 +42,10 @@ const createResponseException = (response) => {
     code: response?.data?.code,
     message: response?.data?.message,
     statusCode: response.status,
-    response: response,
+    // response: response,
   };
 
-  switch (response.statusCode) {
+  switch (response.status) {
     case 401:
     case 403:
     case 404:

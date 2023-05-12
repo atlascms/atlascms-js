@@ -1,4 +1,4 @@
-import FilterBuilder from '../utils/FilterBuilder';
+import FilterBuilder from './FilterBuilder';
 import { ContentFilter } from '../types/index';
 
 export class ContentFilterBuilder extends FilterBuilder {
@@ -66,17 +66,9 @@ export class ContentFilterBuilder extends FilterBuilder {
     if (this._search) result.search = this._search;
 
     let filters = super.toString();
-    if (filters) result.filter = filters;
+    if (filters) result._filters = filters;
 
     return result;
-  }
-
-  toString(): string {
-    let result = this.build();
-
-    return Object.keys(result)
-      .map((key) => key + '=' + result[key])
-      .join('&');
   }
 }
 
