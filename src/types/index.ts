@@ -1,4 +1,4 @@
-export { ContentFilter, AssetFilter, ModelFilter } from './FilterTypes';
+export * from './FilterTypes';
 export { PagedList, PagedListMeta } from './PagedListType';
 export { HttpRequestConfig } from './HttpRequestConfigType';
 export { ClientSettings } from './ClientSettingsType';

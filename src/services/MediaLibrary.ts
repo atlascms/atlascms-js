@@ -1,12 +1,12 @@
 import BaseService from './BaseService';
-import { ClientSettings } from '../types';
-import { AssetFilter } from '../types/index';
+import { convertFilterToQueryString } from '../filters';
+import { ClientSettings, AssetFilter } from '../types/index';
 
 export default class MediaLibrary extends BaseService {
   createFolder(folder: string) {
     return this.client.executeRequest({
       method: 'POST',
-      url: this._composeUrl(this.client.settings, `folders`),
+      url: this.#composeUrl(this.client.settings, `folders`),
       body: {
         folder: folder,
       },
@@ -19,32 +19,46 @@ export default class MediaLibrary extends BaseService {
   deleteFolder(folder: string) {
     return this.client.executeRequest({
       method: 'DELETE',
-      url: this._composeUrl(this.client.settings, `folders`),
+      url: this.#composeUrl(this.client.settings, `folders`),
       query: {
         folder: folder,
       },
     });
   }
 
-  getAssets(filters: AssetFilter) {
+  deleteAsset(id: string) {
+    return this.client.executeRequest({
+      method: 'DELETE',
+      url: this.#composeUrl(this.client.settings, `media/${id}`),
+    });
+  }
+
+  getAssets(filters?: any) {
     return this.client.executeRequest({
       method: 'GET',
-      url: this._composeUrl(this.client.settings, `media`),
-      query: filters,
+      url: this.#composeUrl(this.client.settings, `media`),
+      query: this.#getQueryFilters(filters),
+    });
+  }
+
+  getAsset(id: string) {
+    return this.client.executeRequest({
+      method: 'GET',
+      url: this.#composeUrl(this.client.settings, `media/${id}`),
     });
   }
 
   getFolders() {
     return this.client.executeRequest({
       method: 'GET',
-      url: this._composeUrl(this.client.settings, `folders`),
+      url: this.#composeUrl(this.client.settings, `folders`),
     });
   }
 
   moveFolder(folder: string, moveTo: string) {
     return this.client.executeRequest({
       method: 'POST',
-      url: this._composeUrl(this.client.settings, `folders/move`),
+      url: this.#composeUrl(this.client.settings, `folders/move`),
       body: {
         folder: folder,
         moveTo: moveTo,
@@ -55,7 +69,7 @@ export default class MediaLibrary extends BaseService {
   renameFolder(folder: string, newName: string) {
     return this.client.executeRequest({
       method: 'POST',
-      url: this._composeUrl(this.client.settings, `folders/rename`),
+      url: this.#composeUrl(this.client.settings, `folders/rename`),
       body: {
         folder: folder,
         newName: newName,
@@ -63,9 +77,33 @@ export default class MediaLibrary extends BaseService {
     });
   }
 
-  private _composeUrl(config: ClientSettings, path: string = ''): string {
-    var builder = this.getProjectUrlBuilder(config).addSegment('media-library').addSegment(path);
+  setMediaTags(id: string, tags: Array<string>) {
+    return this.client.executeRequest({
+      method: 'POST',
+      url: this.#composeUrl(this.client.settings, `media/${id}/tags`),
+      body: {
+        tags: tags,
+      },
+    });
+  }
 
-    return builder.build();
+  upload(data: object) {
+    return null;
+    // return this.client.executeRequest({
+    //   method: 'POST',
+    //   url: this.#composeUrl(this.client.settings, `media/upload/image`),
+    //   body: {
+    //     tags: tags,
+    //   },
+    // });
+  }
+
+  #getQueryFilters(filters?: any): string {
+    if (typeof filters === 'string') return filters;
+    else if (typeof filters === 'object') return convertFilterToQueryString(filters);
+  }
+
+  #composeUrl(config: ClientSettings, path: string = ''): string {
+    return this.getProjectUrlBuilder(config).addSegment('media-library').addSegment(path).build();
   }
 }

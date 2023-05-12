@@ -1,20 +1,21 @@
 import { default as FilterBuilder, convertFilterToQueryString } from './FilterBuilder';
-import { AssetFilter } from '../types/index';
+import { UserFilter } from '../types/index';
 
-export class AssetFilterBuilder extends FilterBuilder {
-  #folder?: string | null;
+export class UserFilterBuilder extends FilterBuilder {
+  #username?: string | null;
   #page?: number | null;
   #size?: number | null;
+  #roleId?: string;
+  #resolve?: string;
   #search?: string;
-  #sort?: string;
 
   constructor() {
     super();
   }
 
-  folder(value: string): this {
+  username(value: string): this {
     if (value) {
-      this.#folder = value;
+      this.#username = value;
     }
     return this;
   }
@@ -33,6 +34,13 @@ export class AssetFilterBuilder extends FilterBuilder {
     return this;
   }
 
+  resolve(value: string) {
+    if (value) {
+      this.#resolve = value;
+    }
+    return this;
+  }
+
   search(value: string) {
     if (value) {
       this.#search = value;
@@ -40,12 +48,21 @@ export class AssetFilterBuilder extends FilterBuilder {
     return this;
   }
 
-  build(): AssetFilter {
-    let result: AssetFilter = {};
+  roleId(value: string): this {
+    if (value) {
+      this.#roleId = value;
+    }
+    return this;
+  }
 
-    if (this.#folder) result.folder = this.#folder;
+  build(): UserFilter {
+    let result: UserFilter = {};
+
+    if (this.#username) result.username = this.#username;
     if (this.#page) result.page = this.#page;
     if (this.#size) result.size = this.#size;
+    if (this.#roleId) result.roleId = this.#roleId;
+    if (this.#resolve) result.resolve = this.#resolve;
     if (this.#search) result.search = this.#search;
 
     let filters = super.getFilters();
@@ -60,6 +77,6 @@ export class AssetFilterBuilder extends FilterBuilder {
   }
 }
 
-export const createAssetFilter = () => {
-  return new AssetFilterBuilder();
+export const createUserFilter = () => {
+  return new UserFilterBuilder();
 };

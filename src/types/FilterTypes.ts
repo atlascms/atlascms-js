@@ -1,3 +1,9 @@
+export type DynamicFilterField = {
+  name: string;
+  operator: string;
+  value: any;
+};
+
 export type ContentFilter = {
   locale?: string;
   page?: number;
@@ -6,7 +12,18 @@ export type ContentFilter = {
   search?: string;
   resolve?: string;
   stage?: string;
-  _filters?: string;
+  filters?: object;
+};
+
+export type UserFilter = {
+  username?: string;
+  roleId?: string;
+  page?: number;
+  size?: number;
+  sort?: string;
+  search?: string;
+  resolve?: string;
+  filters?: object;
 };
 
 export type AssetFilter = {
@@ -15,7 +32,7 @@ export type AssetFilter = {
   size?: number;
   sort?: string;
   search?: string;
-  _filters?: string;
+  filters?: object;
 };
 
 export type ModelFilter = {

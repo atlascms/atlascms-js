@@ -1,13 +1,13 @@
-import FilterBuilder from './FilterBuilder';
+import { default as FilterBuilder, convertFilterToQueryString } from './FilterBuilder';
 import { ContentFilter } from '../types/index';
 
 export class ContentFilterBuilder extends FilterBuilder {
-  private _locale?: string | null;
-  private _page?: number | null;
-  private _size?: number | null;
-  private _stage?: string | 'published' | 'unpublished' | 'all';
-  private _resolve?: string;
-  private _search?: string;
+  #locale?: string | null;
+  #page?: number | null;
+  #size?: number | null;
+  #stage?: string | 'published' | 'unpublished' | 'all';
+  #resolve?: string;
+  #search?: string;
 
   constructor() {
     super();
@@ -15,42 +15,42 @@ export class ContentFilterBuilder extends FilterBuilder {
 
   locale(value: string): this {
     if (value) {
-      this._locale = value;
+      this.#locale = value;
     }
     return this;
   }
 
   page(value: number): this {
     if (value) {
-      this._page = value;
+      this.#page = value;
     }
     return this;
   }
 
   pageSize(value: number): this {
     if (value) {
-      this._size = value;
+      this.#size = value;
     }
     return this;
   }
 
   resolve(value: string) {
     if (value) {
-      this._resolve = value;
+      this.#resolve = value;
     }
     return this;
   }
 
   search(value: string) {
     if (value) {
-      this._search = value;
+      this.#search = value;
     }
     return this;
   }
 
   stage(value: string | 'published' | 'unpublished' | 'all'): this {
     if (value) {
-      this._stage = value;
+      this.#stage = value;
     }
     return this;
   }
@@ -58,17 +58,22 @@ export class ContentFilterBuilder extends FilterBuilder {
   build(): ContentFilter {
     let result: ContentFilter = {};
 
-    if (this._locale) result.locale = this._locale;
-    if (this._page) result.page = this._page;
-    if (this._size) result.size = this._size;
-    if (this._stage) result.stage = this._stage;
-    if (this._resolve) result.resolve = this._resolve;
-    if (this._search) result.search = this._search;
+    if (this.#locale) result.locale = this.#locale;
+    if (this.#page) result.page = this.#page;
+    if (this.#size) result.size = this.#size;
+    if (this.#stage) result.stage = this.#stage;
+    if (this.#resolve) result.resolve = this.#resolve;
+    if (this.#search) result.search = this.#search;
 
-    let filters = super.toString();
-    if (filters) result._filters = filters;
+    let filters = super.getFilters();
+    if (filters) result.filters = filters;
 
     return result;
+  }
+
+  toString(): string {
+    let obj = this.build();
+    return convertFilterToQueryString(obj);
   }
 }
 

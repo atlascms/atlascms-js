@@ -14,22 +14,26 @@ export class Client {
   settings: ClientSettings;
   contents: Services.Contents;
   models: Services.Models;
-  accounts: Services.Accounts;
   mediaLibrary: Services.MediaLibrary;
+  users: Services.Users;
   private _http?: AxiosInstance;
 
   constructor(settings: ClientSettings) {
     this.settings = { ...defaultSettings, ...settings };
     this.contents = new Services.Contents(this);
     this.models = new Services.Models(this);
-    this.accounts = new Services.Accounts(this);
     this.mediaLibrary = new Services.MediaLibrary(this);
+    this.users = new Services.Users(this);
     this._http = createHttp(settings);
   }
 
   executeRequest(request: HttpRequestConfig) {
     if (request.method == 'GET') {
-      return this._http?.get(request.url, { params: request.query });
+      if (typeof request.query === 'string' || request.query instanceof String) {
+        return this._http?.get(`${request.url}?${request.query}`);
+      } else {
+        return this._http?.get(request.url, { params: request.query });
+      }
     }
 
     if (request.method == 'POST') {

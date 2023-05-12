@@ -3,4 +3,5 @@ export type HttpRequestConfig = {
   url: string;
   query?: any;
   body?: any;
+  token?: string;
 };
