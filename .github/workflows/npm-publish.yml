@@ -4,8 +4,15 @@
 name: Atlas JS Publish Package
 
 on:
-  release:
-    types: [created]
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Branch to use'
+        required: true
+        default: 'main'
+        type: choice
+        options:
+        - main
 
 jobs:
   build:
