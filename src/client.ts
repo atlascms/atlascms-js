@@ -6,8 +6,8 @@ import { HttpRequestConfig, ClientSettings } from './types/index';
 const defaultSettings: ClientSettings = {
   apiToken: '',
   projectId: '',
-  projectBaseUrl: 'https://localhost:5001',
-  accountBaseUrl: 'https://localhost:5001',
+  projectBaseUrl: '#',
+  accountBaseUrl: '#',
 };
 
 export class Client {
