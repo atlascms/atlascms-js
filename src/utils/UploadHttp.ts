@@ -2,19 +2,6 @@ import axios from 'axios';
 import { AxiosInstance } from 'axios';
 import { ApiException, ClientSettings } from '../types';
 
-export function createHttp(config: ClientSettings) {
-  _config = config;
-
-  _instance = axios.create({
-    timeout: 1000,
-  });
-
-  _instance.interceptors.request.use(onRequest, onError);
-  _instance.interceptors.response.use(onResponse, onError);
-
-  return _instance;
-}
-
 export function createUploadHttp(config: ClientSettings) {
   _config = config;
 

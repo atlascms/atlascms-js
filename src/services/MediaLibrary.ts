@@ -2,6 +2,7 @@ import BaseService from './BaseService';
 import { convertFilterToQueryString } from '../filters';
 import { ClientSettings } from '../types/index';
 import { createUploadHttp } from '../utils';
+import axios from 'axios';
 
 export default class MediaLibrary extends BaseService {
   createFolder(folder: string) {
@@ -10,9 +11,6 @@ export default class MediaLibrary extends BaseService {
       url: this.#composeUrl(this.client.settings, `folders`),
       body: {
         folder: folder,
-      },
-      query: {
-        folder: 'azz',
       },
     });
   }
@@ -88,15 +86,16 @@ export default class MediaLibrary extends BaseService {
     });
   }
 
-  upload(data: object) {
-    return null;
-    // return this.client.executeRequest({
-    //   method: 'POST',
-    //   url: this.#composeUrl(this.client.settings, `media/upload/image`),
-    //   body: {
-    //     tags: tags,
-    //   },
-    // });
+  uploadFile(file: File | Blob, folder?: string) {
+    let data = new FormData();
+    data.append('file', file);
+    data.append('folder', folder ? folder : '/');
+
+    return this.client.executeRequest({
+      method: 'POST',
+      url: this.#composeUrl(this.client.settings, `media/upload`),
+      body: data,
+    });
   }
 
   #getQueryFilters(filters?: any): string {
