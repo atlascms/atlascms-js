@@ -15,6 +15,22 @@ export function createHttp(config: ClientSettings) {
   return _instance;
 }
 
+export function createUploadHttp(config: ClientSettings) {
+  _config = config;
+
+  _instance = axios.create({
+    timeout: 1000,
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  _instance.interceptors.request.use(onRequest, onError);
+  _instance.interceptors.response.use(onResponse, onError);
+
+  return _instance;
+}
+
 let _config: ClientSettings = null;
 let _instance: AxiosInstance = null;
 

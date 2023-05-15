@@ -1,6 +1,7 @@
 import BaseService from './BaseService';
 import { convertFilterToQueryString } from '../filters';
-import { ClientSettings, AssetFilter } from '../types/index';
+import { ClientSettings } from '../types/index';
+import { createUploadHttp } from '../utils';
 
 export default class MediaLibrary extends BaseService {
   createFolder(folder: string) {
