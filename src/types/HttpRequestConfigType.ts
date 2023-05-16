@@ -4,4 +4,6 @@ export type HttpRequestConfig = {
   query?: any;
   body?: any;
   token?: string;
+  contentType?: string;
+  additionalHeaders?: Record<string, string>;
 };
