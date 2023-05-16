@@ -63,7 +63,7 @@ const client = Atlas.createClient(options);
 Now you can use all the features exposed by the client. For Example if you want to read a content of type Posts you can
 
 ```javascript
-const myPosts = await client.contents.getContents("<model-api-key>");
+const myPosts = await client.contents.getContents("posts");
 ```
 
 If you want to filter them by one or more fields you can use the Content Filter Builder like the following:
@@ -77,7 +77,7 @@ const filters = Atlas.createContentFilter()
                      .gte("date","2023-01-01T00:00:00")
                      .build();
 
-const myPosts = await client.contents.getContents("<model-api-key>", filters);
+const myPosts = await client.contents.getContents("posts", filters);
 
 ```
 
