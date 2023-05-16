@@ -15,10 +15,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/atlascms/atlas-js.git"
+    "url": "git+https://github.com/atlascms/atlascms-js.git"
   },
   "bugs": {
-    "url": "https://github.com/atlascms/atlas-js/issues"
+    "url": "https://github.com/atlascms/atlascms-js/issues"
   },
   "devDependencies": {
     "@types/jest": "^29.5.1",
