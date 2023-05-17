@@ -1,23 +1,19 @@
 import BaseService from './BaseService';
 import { convertFilterToQueryString } from '../filters';
 import { ClientSettings } from '../types/index';
-import { createUploadHttp } from '../utils';
-import axios from 'axios';
 
 export default class MediaLibrary extends BaseService {
   createFolder(folder: string) {
-    return this.client.executeRequest({
-      method: 'POST',
+    return this.client.post({
       url: this.#composeUrl(this.client.settings, `folders`),
-      body: {
+      data: {
         folder: folder,
       },
     });
   }
 
   deleteFolder(folder: string) {
-    return this.client.executeRequest({
-      method: 'DELETE',
+    return this.client.delete({
       url: this.#composeUrl(this.client.settings, `folders`),
       query: {
         folder: folder,
@@ -26,39 +22,25 @@ export default class MediaLibrary extends BaseService {
   }
 
   deleteAsset(id: string) {
-    return this.client.executeRequest({
-      method: 'DELETE',
-      url: this.#composeUrl(this.client.settings, `media/${id}`),
-    });
+    return this.client.delete({ url: this.#composeUrl(this.client.settings, `media/${id}`) });
   }
 
   getAssets(filters?: any) {
-    return this.client.executeRequest({
-      method: 'GET',
-      url: this.#composeUrl(this.client.settings, `media`),
-      query: this.#getQueryFilters(filters),
-    });
+    return this.client.get({ url: this.#composeUrl(this.client.settings, `media`) });
   }
 
   getAsset(id: string) {
-    return this.client.executeRequest({
-      method: 'GET',
-      url: this.#composeUrl(this.client.settings, `media/${id}`),
-    });
+    return this.client.get({ url: this.#composeUrl(this.client.settings, `media/${id}`) });
   }
 
   getFolders() {
-    return this.client.executeRequest({
-      method: 'GET',
-      url: this.#composeUrl(this.client.settings, `folders`),
-    });
+    return this.client.get({ url: this.#composeUrl(this.client.settings, `folders`) });
   }
 
   moveFolder(folder: string, moveTo: string) {
-    return this.client.executeRequest({
-      method: 'POST',
+    return this.client.post({
       url: this.#composeUrl(this.client.settings, `folders/move`),
-      body: {
+      data: {
         folder: folder,
         moveTo: moveTo,
       },
@@ -66,10 +48,9 @@ export default class MediaLibrary extends BaseService {
   }
 
   renameFolder(folder: string, newName: string) {
-    return this.client.executeRequest({
-      method: 'POST',
+    return this.client.post({
       url: this.#composeUrl(this.client.settings, `folders/rename`),
-      body: {
+      data: {
         folder: folder,
         newName: newName,
       },
@@ -77,24 +58,38 @@ export default class MediaLibrary extends BaseService {
   }
 
   setMediaTags(id: string, tags: Array<string>) {
-    return this.client.executeRequest({
-      method: 'POST',
+    return this.client.post({
       url: this.#composeUrl(this.client.settings, `media/${id}/tags`),
-      body: {
+      data: {
         tags: tags,
       },
     });
   }
 
-  uploadFile(file: File | Blob, folder?: string) {
+  uploadFile(file: File | Blob, folder?: string, onProgress?: Function) {
     let data = new FormData();
     data.append('file', file);
     data.append('folder', folder ? folder : '/');
 
-    return this.client.executeRequest({
-      method: 'POST',
+    return this.client.post({
       url: this.#composeUrl(this.client.settings, `media/upload`),
-      body: data,
+      data: data,
+      config: {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        timeout: 0,
+        onUploadProgress: function (event) {
+          if (onProgress) {
+            let percentCompleted = Math.round((event.loaded * 100) / event.total);
+            onProgress({
+              percentage: percentCompleted,
+              total: event.total,
+              loaded: event.loaded,
+            });
+          }
+        },
+      },
     });
   }
 

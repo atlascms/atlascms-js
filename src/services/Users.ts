@@ -4,79 +4,69 @@ import { ClientSettings } from '../types/index';
 
 export default class Users extends BaseService {
   count(filters?: any) {
-    return this.client.executeRequest({
-      method: 'GET',
+    return this.client.get({
       url: this.#composeUrl(this.client.settings, 'count'),
       query: this.#getQueryFilters(filters),
     });
   }
 
   creteRole(data: object) {
-    return this.client.executeRequest({
-      method: 'POST',
+    return this.client.post({
       url: this.#composeUrl(this.client.settings, 'roles'),
-      body: data,
+      data: data,
     });
   }
 
   changePassword(id: string, newPassword: string) {
-    return this.client.executeRequest({
-      method: 'GET',
+    return this.client.post({
       url: this.#composeUrl(this.client.settings, `${id}`),
-      body: {
+      data: {
         password: newPassword,
       },
     });
   }
 
   deleteRole(id: string) {
-    return this.client.executeRequest({
-      method: 'DELETE',
+    return this.client.delete({
       url: this.#composeUrl(this.client.settings, `roles/${id}`),
     });
   }
 
   deleteUser(id: string) {
-    return this.client.executeRequest({
-      method: 'DELETE',
+    return this.client.delete({
       url: this.#composeUrl(this.client.settings, `${id}`),
     });
   }
 
   getRoles() {
-    return this.client.executeRequest({
-      method: 'GET',
+    return this.client.get({
       url: this.#composeUrl(this.client.settings, `roles`),
     });
   }
 
   getPermissionsSet() {
-    return this.client.executeRequest({
-      method: 'GET',
+    return this.client.get({
       url: this.#composeUrl(this.client.settings, `roles/permissions`),
     });
   }
 
   getUsers(filters?: any) {
-    return this.client.executeRequest({
-      method: 'GET',
+    return this.client.get({
       url: this.#composeUrl(this.client.settings),
       query: this.#getQueryFilters(filters),
     });
   }
 
   getUser(id: string) {
-    return this.client.executeRequest({
-      method: 'GET',
+    return this.client.get({
       url: this.#composeUrl(this.client.settings, `${id}`),
     });
   }
 
   loginUser(username: string, password: string) {
-    return this.client.executeRequest({
-      method: 'POST',
+    return this.client.post({
       url: this.#composeUrl(this.client.settings, `login`),
-      body: {
+      data: {
         username: username,
         password: password,
       },
@@ -84,26 +74,23 @@ export default class Users extends BaseService {
   }
 
   registerUser(data: object) {
-    return this.client.executeRequest({
-      method: 'POST',
+    return this.client.post({
       url: this.#composeUrl(this.client.settings),
-      body: data,
+      data: data,
     });
   }
 
   updateUser(id: string, data: object) {
-    return this.client.executeRequest({
-      method: 'PUT',
+    return this.client.put({
       url: this.#composeUrl(this.client.settings, `${id}`),
-      body: data,
+      data: data,
     });
   }
 
   updateRole(id: string, data: object) {
-    return this.client.executeRequest({
-      method: 'PUT',
+    return this.client.put({
       url: this.#composeUrl(this.client.settings, `roles/${id}`),
-      body: data,
+      data: data,
     });
   }
 

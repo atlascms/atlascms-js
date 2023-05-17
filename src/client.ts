@@ -1,7 +1,7 @@
 import { AxiosInstance, AxiosRequestConfig } from 'axios';
 import * as Services from './services/index';
 import { createHttp } from './utils/index';
-import { HttpRequestConfig, ClientSettings } from './types/index';
+import { HttpGetParams, HttpPostParams, HttpPutParams, HttpDeleteParams, ClientSettings } from './types/index';
 
 const defaultSettings: ClientSettings = {
   apiToken: '',
@@ -27,46 +27,32 @@ export class Client {
     this._http = createHttp(settings);
   }
 
-  executeRequest(request: HttpRequestConfig) {
-    if (request.method == 'GET') {
-      if (typeof request.query === 'string' || request.query instanceof String) {
-        return this._http?.get(`${request.url}?${request.query}`, this.#createRequestConfig(request));
-      } else {
-        return this._http?.get(request.url, this.#createRequestConfig(request));
-      }
-    }
-
-    if (request.method == 'POST') {
-      return this._http?.post(request.url, request.body, this.#createRequestConfig(request));
-    }
-
-    if (request.method == 'PUT') {
-      return this._http?.put(request.url, request.body, this.#createRequestConfig(request));
-    }
-
-    if (request.method == 'DELETE') {
-      return this._http?.delete(request.url, this.#createRequestConfig(request));
+  get({ url, query = null, config = null }: HttpGetParams) {
+    if (typeof query === 'string' || query instanceof String) {
+      return this._http?.get(`${url}?${query}`, this.#createRequestConfig(config));
+    } else {
+      return this._http?.get(url, this.#createRequestConfig(config));
     }
   }
 
-  #createRequestConfig(request: HttpRequestConfig): AxiosRequestConfig<any> {
-    let config: AxiosRequestConfig<any> = {};
+  post({ url, data = null, config = null }: HttpPostParams) {
+    return this._http?.post(url, data, this.#createRequestConfig(config));
+  }
 
-    if (typeof request.query !== 'string' && !(request.query instanceof String)) {
-      config.params = request.query;
+  put({ url, data = null, config = null }: HttpPutParams) {
+    return this._http?.put(url, data, this.#createRequestConfig(config));
+  }
+
+  delete({ url, query = null, config = null }: HttpGetParams) {
+    if (query) {
+      config = { ...config, params: query };
     }
 
-    if (request.additionalHeaders) {
-      config.headers = { ...config.headers, ...request.additionalHeaders };
-    }
+    return this._http?.delete(url, this.#createRequestConfig(config));
+  }
 
-    if (request.token) {
-      config.headers['Authorization'] = `Bearer ${request.token}`;
-    } else {
-      if (this.settings.apiToken) {
-        config.headers['Authorization'] = `Bearer ${this.settings.apiToken}`;
-      }
-    }
+  #createRequestConfig(config?: AxiosRequestConfig<any>): AxiosRequestConfig<any> {
+    if (!config) return null;
 
     return config;
   }

@@ -19,6 +19,12 @@ let _config: ClientSettings = null;
 let _instance: AxiosInstance = null;
 
 const onRequest = (request) => {
+  const hasAuthHeader = !(request.headers?.Authorization === undefined || request.headers?.Authorization === null);
+
+  if (!hasAuthHeader && _config.apiToken) {
+    request.headers.Authorization = `Bearer ${_config.apiToken}`;
+  }
+
   return request;
 };
 

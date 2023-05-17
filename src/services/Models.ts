@@ -4,77 +4,67 @@ import { ModelFilter } from '../types/index';
 
 export default class Models extends BaseService {
   createModel(data: object) {
-    return this.client.executeRequest({
-      method: 'POST',
+    return this.client.post({
       url: this._composeUrl(this.client.settings, `models`),
-      body: data,
+      data: data,
     });
   }
 
   createComponent(data: object) {
-    return this.client.executeRequest({
-      method: 'POST',
+    return this.client.post({
       url: this._composeUrl(this.client.settings, `components`),
-      body: data,
+      data: data,
     });
   }
 
   deleteModel(id: string) {
-    return this.client.executeRequest({
-      method: 'DELETE',
+    return this.client.delete({
       url: this._composeUrl(this.client.settings, `models/${id}`),
     });
   }
 
   deleteComponent(id: string) {
-    return this.client.executeRequest({
-      method: 'DELETE',
+    return this.client.delete({
       url: this._composeUrl(this.client.settings, `components/${id}`),
     });
   }
 
   getModels(filters?: ModelFilter) {
-    return this.client.executeRequest({
-      method: 'GET',
+    return this.client.get({
       url: this._composeUrl(this.client.settings, 'models'),
       query: filters,
     });
   }
 
   getComponents() {
-    return this.client.executeRequest({
-      method: 'GET',
+    return this.client.get({
       url: this._composeUrl(this.client.settings, 'components'),
     });
   }
 
   getModel(id: string) {
-    return this.client.executeRequest({
-      method: 'GET',
+    return this.client.get({
       url: this._composeUrl(this.client.settings, `models/${id}`),
     });
   }
 
   getComponent(id: string) {
-    return this.client.executeRequest({
-      method: 'GET',
+    return this.client.get({
       url: this._composeUrl(this.client.settings, `components/${id}`),
     });
   }
 
   updateModel(id: string, data: object) {
-    return this.client.executeRequest({
-      method: 'PUT',
+    return this.client.put({
       url: this._composeUrl(this.client.settings, `models/${id}`),
-      body: data,
+      data: data,
     });
   }
 
   updateComponent(id: string, data: object) {
-    return this.client.executeRequest({
-      method: 'PUT',
+    return this.client.put({
       url: this._composeUrl(this.client.settings, `components/${id}`),
-      body: data,
+      data: data,
     });
   }
 
